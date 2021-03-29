@@ -109,7 +109,9 @@ exports.deleteMscamp = async (req, res, next) => {
     }
     res.status(200).json({
       success: true,
-      data: mscamp,
+      data: {
+        message:"删除成功"
+      },
     });
   } catch (error) {
     res.status(400).json({
