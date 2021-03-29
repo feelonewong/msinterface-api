@@ -1,49 +1,46 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
 
-const MscampSchema = new Schema({
+const MscampSchema = new mongoose.Schema({
   name: {
     type: String,
-    require: [true, "请填写培训课程名称"],
+    require: [true, "请填写培训课程的名字"],
     unique: true,
     trim: true,
     maxLength: [50, "课程名字不能超过50个字"],
   },
   description: {
     type: String,
-    require: [true, "请填写培训课程的描述"],
-    maxLength: [500, "课程描述不能超过500个字"],
+    require: [true, "请填写培训的课程描述"],
+    maxlength: [500, "课程描述不能超过500个字"],
   },
   website: {
     type: String,
     match: [
-      /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/,
-      "请填写合法网址",
+      /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/,
+      "请填写合法的网址",
     ],
   },
   phone: {
     type: String,
-    match: [
-      /^1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}$/,
-      "请填写正确的手机号码",
-    ],
+    match: [/^[1][3,4,5,7,8][0-9]{9}$/, "请填写正确的手机号码"],
   },
   email: {
     type: String,
     match: [
-      /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/,
-      "请填写正确的email地址",
+      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+      "请填写正确的邮箱地址",
     ],
   },
   address: {
     type: String,
-    default: "上海市徐汇区古美路田林路99号",
+    default: "四川省成都市武侯区来福士T2办公区7层",
   },
   careers: {
-    type: String,
+    type: [String],
     required: true,
     enum: [
       "前端开发",
+      "小程序开发",
       "后端开发",
       "跨平台开发",
       "数据分析",
@@ -55,10 +52,10 @@ const MscampSchema = new Schema({
     type: Boolean,
     default: true,
   },
-  createAt: {
+  createdAt: {
     type: Date,
     default: Date.now,
   },
 });
 
-model.exports = mongoose.model("Mscamp", MscampSchema);
+module.exports = mongoose.model("Mscamp", MscampSchema);
