@@ -3,14 +3,14 @@ const mongoose = require("mongoose");
 const MscampSchema = new mongoose.Schema({
   name: {
     type: String,
-    require: [true, "请填写培训课程的名字"],
+    required: [true, "请填写培训课程的名字"],
     unique: true,
     trim: true,
     maxLength: [50, "课程名字不能超过50个字"],
   },
   description: {
     type: String,
-    require: [true, "请填写培训的课程描述"],
+    required: [true, "请填写培训的课程描述"],
     maxlength: [500, "课程描述不能超过500个字"],
   },
   website: {
