@@ -1,6 +1,6 @@
 //import models
 const Mscamps = require("../models/Mscamp");
-
+const ErrorResponse = require("../utils/errorResponse");
 /**
  * @desc 获取所有的数据
  * @route GET /api/v1/mscamps
@@ -15,10 +15,7 @@ exports.getMscamps = async (req, res, next) => {
       count: mscamps.length,
     });
   } catch (error) {
-    res.status(400).json({
-      success: false,
-      error: error,
-    });
+    next(error);
   }
 };
 
@@ -31,17 +28,16 @@ exports.getMscamp = async (req, res, next) => {
   try {
     const mscamp = await Mscamps.findById(req.params.id);
     if (!mscamp) {
-      return res.status(400).json({ success: false });
+      return next(
+        new ErrorResponse(`Resource not found with id of ${req.params.id}`, 404)
+      );
     }
     res.status(200).json({
       success: true,
       data: mscamp,
     });
   } catch (error) {
-    res.status(400).json({
-      success: false,
-      error: error,
-    });
+    next(error);
   }
 };
 
@@ -59,10 +55,7 @@ exports.createMscamp = async (req, res, next) => {
       data: mscamp,
     });
   } catch (error) {
-    res.status(400).json({
-      success: false,
-      error: error,
-    });
+    next(error);
   }
 };
 
@@ -78,19 +71,14 @@ exports.updateMscamp = async (req, res, next) => {
       runValidators: true,
     });
     if (!mscamp) {
-      res.status(200).json({
-        success: false,
-      });
+     return next(new ErrorResponse(`Resource not found with id of ${req.params.id}`, 404));
     }
     res.status(200).json({
       success: true,
       data: mscamp,
     });
   } catch (error) {
-    res.status(400).json({
-      success: false,
-      error: error,
-    });
+    next(error);
   }
 };
 
@@ -103,20 +91,15 @@ exports.deleteMscamp = async (req, res, next) => {
   try {
     const mscamp = await Mscamps.findByIdAndDelete(req.params.id);
     if (!mscamp) {
-      res.status(400).json({
-        success: false,
-      });
+      return next(new ErrorResponse(`Resource not found with id of ${req.params.id}`, 404));
     }
     res.status(200).json({
       success: true,
       data: {
-        message:"删除成功"
+        message: "删除成功",
       },
     });
   } catch (error) {
-    res.status(400).json({
-      success: false,
-      error: error,
-    });
+    next(error);
   }
 };

@@ -5,7 +5,7 @@ const logger = require("./middleware/logger");
 const morgan = require("morgan");
 const colors = require("colors");
 const connectDB = require("./config/db");
-
+const errorHandler = require("./middleware/error");
 dotenv.config({
   path: "./config/config.env",
 });
@@ -30,6 +30,8 @@ connectDB();
 
 app.use(`/api/v1/mscamps`, router);
 
+//写在路由挂载之前
+app.use(errorHandler);
 const server = app.listen(
   PORT,
   console.log(`Server runnint on ${process.env.NODE_ENV} mode on port ${PORT}`.green)
