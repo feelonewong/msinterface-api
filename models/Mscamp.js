@@ -35,6 +35,9 @@ const MscampSchema = new mongoose.Schema({
     type: String,
     default: "四川省成都市武侯区来福士T2办公区7层",
   },
+  averageCost:{
+    type: Number
+  },
   careers: {
     type: [String],
     required: true,

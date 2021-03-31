@@ -10,7 +10,7 @@
     "address": "四川省成都市武侯区来福士T2办公区7层",
     "careers": ["前端开发", "小程序开发", "跨平台开发"],
     "online": false,
-    "averageCost": 38
+    "averageCost": 58
   },
   {
     "_id": "5d713a66ec8f2b88b8f830b8",
@@ -23,7 +23,7 @@
     "address": "四川省成都市武侯区来福士T2办公区7层",
     "careers": ["前端开发", "数据挖掘", "人工智能"],
     "online": false,
-    "averageCost": 58
+    "averageCost": 88
   },
   {
     "_id": "5d725a037b292f5f8ceff787",
