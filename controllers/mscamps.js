@@ -8,9 +8,21 @@ const asyncHandler = require("../middleware/async");
  * @access 公开的
  */
 exports.getMscamps = asyncHandler(async (req, res, next) => {
-  let queryStr = JSON.stringify(req.query);
+  let query;
+  let reqQuery = {...req.query};
+  let removeFields = ["select"];
+  removeFields.forEach( (params)=> delete reqQuery[params] );
+
+  let queryStr = JSON.stringify(reqQuery);
   queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, (match)=>`$${match}` ); 
-  const mscamps = await Mscamps.find(JSON.parse(queryStr));
+  query = Mscamps.find(JSON.parse(queryStr));
+  if(req.query.select){
+    const fields = req.query.select.split(",").join();
+    query = query.select(fields);
+  }
+  console.log(query.select);
+
+  const mscamps = await query;
   res.status(200).json({
     success: true,
     data: mscamps,
