@@ -10,12 +10,12 @@ const Mscamp = require("../models/Mscamp");
  */
 exports.getCourses = asyncHandler(async (req, res, next) => {
   let query;
-  if(req.params.mscampId){
-    query = Course.find({ mscamp: req.params.mscampId})
-  }else{
+  if (req.params.mscampId) {
+    query = Course.find({ mscamp: req.params.mscampId });
+  } else {
     query = Course.find().populate({
-      path:"mscamp",
-      select: "name description"
+      path: "mscamp",
+      select: "name description",
     });
   }
   const courses = await query;
@@ -31,10 +31,10 @@ exports.getCourses = asyncHandler(async (req, res, next) => {
  * @route GET /api/v1/courses/:id
  * @access 公开的
  */
- exports.getCourse = asyncHandler(async (req, res, next) => {
+exports.getCourse = asyncHandler(async (req, res, next) => {
   const course = await Course.findById(req.params.id).populate({
     path: "mscamp",
-    select: "name description"
+    select: "name description",
   });
   if (!course) {
     return next(
@@ -47,14 +47,13 @@ exports.getCourses = asyncHandler(async (req, res, next) => {
   });
 });
 
-
 /**
  * @desc 创建单个课程数据
  * @route GET /api/v1/courses/
  * @access 公开的
  */
- exports.addCourse = asyncHandler(async (req, res, next) => {
-   //先查询mscamp的数据是否存在没查到才会添加
+exports.addCourse = asyncHandler(async (req, res, next) => {
+  //先查询mscamp的数据是否存在没查到才会添加
   const mscamp = await Mscamp.findById(req.params.mscampId);
   if (!mscamp) {
     return next(
@@ -69,3 +68,24 @@ exports.getCourses = asyncHandler(async (req, res, next) => {
   });
 });
 
+/**
+ * @desc 更新单个的数据
+ * @route GET /api/v1/course/:id
+ * @access 公开的
+ */
+exports.updateCourse = asyncHandler(async (req, res, next) => {
+  let course = await Course.findById(req.params.id);
+  if (!course) {
+    return next(
+      new ErrorResponse(`Resource not found with id of ${req.params.id}`, 404)
+    );
+  }
+  course = await Course.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+  res.status(200).json({
+    success: true,
+    data: course,
+  });
+});

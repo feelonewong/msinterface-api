@@ -104,7 +104,7 @@ exports.createMscamp = asyncHandler(async (req, res, next) => {
  * @access 公开的
  */
 exports.updateMscamp = asyncHandler(async (req, res, next) => {
-  try {
+  
     const mscamp = await Mscamps.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
@@ -118,9 +118,7 @@ exports.updateMscamp = asyncHandler(async (req, res, next) => {
       success: true,
       data: mscamp,
     });
-  } catch (error) {
-    next(error);
-  }
+  
 });
 
 /**
