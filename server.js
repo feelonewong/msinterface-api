@@ -1,11 +1,16 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const router = require("./routes/mscamps");
 const logger = require("./middleware/logger");
 const morgan = require("morgan");
 const colors = require("colors");
 const connectDB = require("./config/db");
 const errorHandler = require("./middleware/error");
+
+//引入路由文件
+
+const mscamps = require("./routes/mscamps");
+const courses = require("./routes/courses");
+
 dotenv.config({
   path: "./config/config.env",
 });
@@ -28,7 +33,8 @@ app.get("/", (req, res) => {
 //链接数据库
 connectDB();
 
-app.use(`/api/v1/mscamps`, router);
+app.use(`/api/v1/mscamps`, mscamps);
+app.use(`/api/v1/courses`, courses);
 
 //写在路由挂载之前
 app.use(errorHandler);
