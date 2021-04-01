@@ -64,10 +64,18 @@ const MscampSchema = new mongoose.Schema({
   toObject: {virtuals: true}
 });
 
+//配置virtual
 MscampSchema.virtual("courses",{
   ref: "Courses",
   localField:"_id",
   foreignField: "mscamp",
   justOne: false
+})
+
+//配置前置钩子
+MscampSchema.pre("remove", async function(next){
+  console.log(this._id);
+  await this.model("Courses").deleteMany({mscamp: this._id});
+  next();
 })
 module.exports = mongoose.model("Mscamp", MscampSchema);

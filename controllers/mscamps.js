@@ -38,7 +38,7 @@ exports.getMscamps = asyncHandler(async (req, res, next) => {
 
   //处理分页
   const page = parseInt(req.query.page, 10) || 1;
-  const limit = parseInt(req.query.limit, 10) || 2;
+  const limit = parseInt(req.query.limit, 10) || 20;
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
   const total = await Mscamps.countDocuments();
@@ -130,12 +130,14 @@ exports.updateMscamp = asyncHandler(async (req, res, next) => {
  */
 exports.deleteMscamp = asyncHandler(async (req, res, next) => {
   try {
-    const mscamp = await Mscamps.findByIdAndDelete(req.params.id);
+    const mscamp = await Mscamps.findById(req.params.id);
     if (!mscamp) {
       return next(
         new ErrorResponse(`Resource not found with id of ${req.params.id}`, 404)
       );
     }
+
+    mscamp.remove();
     res.status(200).json({
       success: true,
       data: {
