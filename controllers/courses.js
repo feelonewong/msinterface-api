@@ -9,21 +9,22 @@ const Mscamp = require("../models/Mscamp");
  * @access 公开的
  */
 exports.getCourses = asyncHandler(async (req, res, next) => {
-  let query;
   if (req.params.mscampId) {
-    query = Course.find({ mscamp: req.params.mscampId });
+    const courses = await Course.find({ mscamp: req.params.mscampId });
+    return res.status(200).json({
+      success: true,
+      count: courses.length,
+      data: courses
+    })
   } else {
-    query = Course.find().populate({
-      path: "mscamp",
-      select: "name description",
-    });
+    res.status(200).json(res.advanceResults);;
   }
-  const courses = await query;
-  res.status(200).json({
-    success: true,
-    data: courses,
-    count: courses.length,
-  });
+  // const courses = await query;
+  // res.status(200).json({
+  //   success: true,
+  //   data: courses,
+  //   count: courses.length,
+  // });
 });
 
 /**
