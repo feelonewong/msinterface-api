@@ -12,7 +12,10 @@ exports.getCourses = asyncHandler(async (req, res, next) => {
   if(req.params.mscampId){
     query = Course.find({ mscamp: req.params.mscampId})
   }else{
-    query = Course.find();
+    query = Course.find().populate({
+      path:"mscamp",
+      select: "name description"
+    });
   }
   const courses = await query;
   res.status(200).json({

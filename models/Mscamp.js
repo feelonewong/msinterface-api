@@ -58,7 +58,16 @@ const MscampSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now,
-  },
+  }
+},{
+  toJSON: {virtuals: true},
+  toObject: {virtuals: true}
 });
 
+MscampSchema.virtual("courses",{
+  ref: "Courses",
+  localField:"_id",
+  foreignField: "mscamp",
+  justOne: false
+})
 module.exports = mongoose.model("Mscamp", MscampSchema);

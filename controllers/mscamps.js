@@ -20,7 +20,7 @@ exports.getMscamps = asyncHandler(async (req, res, next) => {
     (match) => `$${match}`
   );
 
-  query = Mscamps.find(JSON.parse(queryStr));
+  query = Mscamps.find(JSON.parse(queryStr)).populate("courses");
 
   // 在query所有数据的基础上,在加条件
   if (req.query.select) {
