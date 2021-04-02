@@ -7,9 +7,9 @@ const connectDB = require("./config/db");
 const errorHandler = require("./middleware/error");
 
 //引入路由文件
-
 const mscamps = require("./routes/mscamps");
 const courses = require("./routes/courses");
+const auth = require("./routes/auth");
 
 dotenv.config({
   path: "./config/config.env",
@@ -35,6 +35,7 @@ connectDB();
 
 app.use(`/api/v1/mscamps`, mscamps);
 app.use(`/api/v1/courses`, courses);
+app.use(`/api/v1/auth`, auth);
 
 //写在路由挂载之前
 app.use(errorHandler);
