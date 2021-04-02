@@ -14,6 +14,22 @@ exports.register = asyncHandler(async (req, res, next) => {
   sendTokenResponse(200,user, res);
 });
 
+
+/**
+ * @desc 获取用户信息
+ * @route GET /api/v1/auth/me
+ * @access 公开的
+ */
+ exports.getMe = asyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.user.id);
+  res.status(200).json({
+    success: true,
+    data: user
+  })
+});
+
+
+
 /**
  * @desc 登录
  * @route GET /api/v1/auth/register
