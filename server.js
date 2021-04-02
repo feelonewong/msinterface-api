@@ -5,7 +5,7 @@ const morgan = require("morgan");
 const colors = require("colors");
 const connectDB = require("./config/db");
 const errorHandler = require("./middleware/error");
-
+const cookieParser = require('cookie-parser');
 //引入路由文件
 const mscamps = require("./routes/mscamps");
 const courses = require("./routes/courses");
@@ -22,6 +22,9 @@ app.use(express.json());
 const PORT = process.env.PORT || 3000;
 
 app.use(morgan("dev"));
+
+//cookie pasrser中间件
+app.use(cookieParser())
 //首页
 app.get("/", (req, res) => {
     res.status(200).json({

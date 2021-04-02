@@ -26,7 +26,7 @@ const UserSchema = Schema({
     type: String,
     required: [true, "请添加密码"],
     minlength: 6,
-    // select: false
+    select: false
   },
   createdAt: {
     type: Date,
@@ -44,5 +44,10 @@ UserSchema.methods.getSingedJsonWebToken = function () {
     expiresIn: process.env.EXPIRED,
   });
   return token;
+};
+
+UserSchema.methods.matchPassword =async function (enterPassword) {
+  let password = await bcrypt.compare(enterPassword, this.password);
+  return password;
 };
 module.exports = mongoose.model("User", UserSchema);
