@@ -1,4 +1,4 @@
-// const User = require("../models/User");
+const User = require("../models/User");
 // const ErrorResponse = require("../utils/errorResponse");
 const asyncHandler = require("../middleware/async");
 
@@ -8,8 +8,10 @@ const asyncHandler = require("../middleware/async");
  * @access 公开的
  */
 exports.register = asyncHandler(async (req, res, next) => {
+  const { name, role, email, password } = req.body;
+  const user = await User.create({ name, role, email, password });
   res.status(200).json({
-      success: true,
-      data: "注册成功"
-  })
+    success: true,
+    data: user,
+  });
 });

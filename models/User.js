@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-const { Schema } = new mongoose();
+const bcrypt = require("bcryptjs");
+const { Schema } = mongoose;
 const UserSchema = Schema({
   name: {
     type: String,
@@ -18,18 +19,23 @@ const UserSchema = Schema({
   role: {
     type: String,
     default: "user",
-    enum: ["user","admin","visitor"]
+    enum: ["user", "admin", "visitor"],
   },
   password: {
     type: String,
     required: [true, "请添加密码"],
     minlength: 6,
-    select: false
+    // select: false
   },
-  createdAt:{
+  createdAt: {
     type: Date,
     default: Date.now,
-  }
+  },
+});
+
+UserSchema.pre("save", async function () {
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
 });
 
 module.exports = mongoose.model("User", UserSchema);
