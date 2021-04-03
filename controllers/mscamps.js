@@ -35,6 +35,16 @@ exports.getMscamp = asyncHandler(async (req, res, next) => {
  * @access 公开的
  */
 exports.createMscamp = asyncHandler(async (req, res, next) => {
+
+  req.body.user = req.user.id;
+
+  const publistMscamp = await Mscamps.findOne({user: req.user.id});
+
+
+  if(publistMscamp && req.user.role !== "admin"){
+    return next( new ErrorResponse("该机构已经存在不要重复创建",400) );
+  }
+
   const mscamp = await Mscamps.create(req.body);
   res.status(200).json({
     resCode: 200,

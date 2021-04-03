@@ -4,7 +4,7 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const Mscamps = require("./models/Mscamp");
 const Courses = require("./models/Courses");
-
+const User = require("./models/User");
 dotenv.config({
   path: "./config/config.env",
 });
@@ -26,11 +26,16 @@ const courses = JSON.parse(
   fs.readFileSync(`${__dirname}/_data/courses.json`, "utf-8")
 );
 
+const user = JSON.parse(
+  fs.readFileSync(`${__dirname}/_data/users.json`, "utf-8")
+);
+
 //导入数据到mongodb
 const importData = async () => {
   try {
     await Mscamps.create(mscamps);
     await Courses.create(courses);
+    await User.create(user);
     console.log("导入数据成功!".green.inverse);
     process.exit();
   } catch (error) {
@@ -43,6 +48,7 @@ const deleteData = async () => {
   try {
     await Mscamps.deleteMany();
     await Courses.deleteMany();
+    await User.deleteMany();
     console.log("删除数据成功".red.inverse);
     process.exit();
   } catch (error) {
